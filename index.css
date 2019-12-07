@@ -1,0 +1,19 @@
+@font-face {
+  font-family: somi;
+  src: url(font/somi.ttf);
+}
+
+body {
+  background-color: black;
+}
+
+h0 {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translateX(-50%) translateY(-50%);
+  color: #7b2c7b;
+  font-family: somi;
+  font-size: xx-large;
+}
+
