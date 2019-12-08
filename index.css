@@ -13,6 +13,7 @@ h0 {
   left: 50%;
   transform: translateX(-50%) translateY(-50%);
   color: #7b2c7b;
+  text-align: center;
   font-family: somi;
   font-size: xx-large;
 }
