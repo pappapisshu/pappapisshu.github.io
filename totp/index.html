@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="it">
+
+<head>
+    <meta charset="utf-8">
+    <title>TOTP Lepida ID</title>
+    <script src="kjua-0.9.0.min.js"></script>
+</head>
+
+<body>
+    <h1>Generare un codice QR per autenticazione a due fattori tramite TOTP per credenziali Lepida ID</h1>
+    <ol>
+        <li>aprire in una nuova scheda del browser la <a href="https://id.lepida.it/lepidaid/app/associaAppLogin?X-App-Id=PROD-LEPIDAIDAPP-A&X-App-Version=2.0.0">pagina con cui Lepida effettua l'associazione dell'applicazione proprietaria LepidaID</a>;</li>
+        <li>completare il processo di autenticazione, al termine del quale verrà mostrata una pagina bianca con la scritta <i>end login page</i>;</li>
+        <li>copiare l'URL dalla barra degli indirizzi e incollarlo nella casella di testo sottostante;</li>
+        <li>scansionare il codice QR utilizzando una qualsiasi applicazione per autenticazione a due fattori tramite TOTP come <a href="https://github.com/andOTP/andOTP">andOTP</a> (per Android), <a href="https://www.tofuauth.com/">Tofu</a> (per iOS) o <a href="https://gitlab.gnome.org/World/Authenticator">Authenticator</a> per GNU/Linux.</li>
+    </ol>
+
+    <label for="text">Incollare qui l'URL della pagina bianca con la scritta <i>end login page</i>:</label>
+    <input type="url" id="text" name="text">
+
+    <div id="container"></div>
+
+    <script>
+        document.getElementById('text').oninput = draw_qrcode;
+        
+        function draw_qrcode(e) {
+          let container = document.getElementById('container');
+          while (container.firstChild) {
+            container.removeChild(container.firstChild);
+          }
+        
+          try {
+            const url = new URL(e.target.value);
+            let secretKey = url.searchParams.get('secretKey');
+            if (secretKey === null) {
+              let paragraph = document.createElement("p");
+              paragraph.innerText = "ERRORE: impossibile generare il codice QR.";
+              container.appendChild(paragraph);
+            } else {
+              let secret = secretKey.replace(/[\w]/gi, function(match) {
+                return {
+                  'A': 'O',
+                  'B': 'R',
+                  'C': 'J',
+                  'D': '2',
+                  'E': 'L',
+                  'F': 'C',
+                  'G': 'E',
+                  'H': '4',
+                  'I': 'B',
+                  'J': 'P',
+                  'K': 'S',
+                  'L': 'H',
+                  'M': 'A',
+                  'N': 'W',
+                  'O': 'F',
+                  'P': 'T',
+                  'Q': 'U',
+                  'R': '7',
+                  'S': 'Y',
+                  'T': 'D',
+                  'U': '3',
+                  'V': 'N',
+                  'W': 'Z',
+                  'X': '5',
+                  'Y': 'M',
+                  'Z': '6',
+                  '2': 'I',
+                  '3': 'X',
+                  '4': 'Q',
+                  '5': 'G',
+                  '6': 'V',
+                  '7': 'K'
+                } [match];
+              });
+        
+              var qr = kjua({
+                text: `otpauth://totp/Lepida?secret=${secret}&algorithm=SHA1&period=30&digits=6&issuer=id.lepida.it`
+              });
+              container.appendChild(qr);
+            }
+          } catch (e) {
+            let paragraph = document.createElement("p");
+            paragraph.innerText = "ERRORE: all'interno della casella di testo non è stato inserito un URL valido.";
+            container.appendChild(paragraph);
+          }
+        }
+    </script>
+</body>
+
+</html>
