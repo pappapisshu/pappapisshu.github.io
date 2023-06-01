@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <style>
+            #direction {
+                text-align: center;
+                font-size: 20vw;
+            }
+        </style>
+        <script>
+            const MILLIS_PER_DAY = 8.64e7;
+
+            function setTodaysDirection() {
+                if(Math.floor(new Date()/MILLIS_PER_DAY) % 2 == 0) {
+                    document.getElementById("direction").innerHTML = "←";
+                } else {
+                    document.getElementById("direction").innerHTML = "→";
+                }
+            }
+        </script>
+    </head>
+    <body onload="setTodaysDirection()">
+        <p id="direction"></p>
+    </body>
+</html> 
